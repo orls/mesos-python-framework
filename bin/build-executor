@@ -56,3 +56,6 @@ pushd dist > /dev/null
     echo "Cleaning up temporary directory"
     rm -rf $TMP_DIR
 popd  > /dev/null
+
+echo ""
+echo "Executor built to $(pwd ./dist)$TAR_NAME.tar.gz"
