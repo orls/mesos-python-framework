@@ -31,23 +31,23 @@ echo "Using temporary directory $TMP_DIR"
 
 # Create a copy of the repository
 mkdir -p dist
-pushd dist
-    pushd $TMP_DIR
+pushd dist > /dev/null
+    pushd $TMP_DIR  > /dev/null
         mkdir build
         cp -r $SOURCE_DIR/** build/
 
-        pushd build
+        pushd build  > /dev/null
             rm -rf *.pyc
             rm -rf bin/env
             rm -rf dist
-        popd
+        popd  > /dev/null
 
         mv build $TAR_NAME
         tar -cvf $TAR_NAME.tar.gz $TAR_NAME
-    popd
+    popd  > /dev/null
 
     mv $TMP_DIR/$TAR_NAME.tar.gz ./
 
     echo "Cleaning up temporary directory"
     rm -rf $TMP_DIR
-popd
+popd  > /dev/null
