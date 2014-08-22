@@ -13,18 +13,23 @@ set -e
 
 cd $(dirname $(dirname $0))
 
+EXTRA_SUFFIX=''
 # Help the user out by warning them of uncommitted changes
 if [ -n "$(git status --porcelain)" ]; then
     if [ ! "$FORCE" ]; then
-        echo "You appear to have uncommitted changes, use FORCE=1 to proceed."
-        exit 1
+        echo "You appear to have uncommitted changes, using additional hash of your diff"
+        MD5APP=md5sum
+        if [ -z "$(which $MD5APP)" ]; then
+            MD5APP="md5"
+        fi
+        EXTRA_SUFFIX="-uncommitted-$(git diff | $MD5APP)"
     fi
 fi
 
 # Figure out the git revision
 GIT_REV=$(git rev-parse HEAD)
 SOURCE_DIR=$(pwd)
-TAR_NAME="mesos-py-test-$GIT_REV"
+TAR_NAME="mesos-py-test-$GIT_REV$EXTRA_SUFFIX"
 TMP_DIR=$(mktemp -d -t XXXXXX)
 
 echo "Using temporary directory $TMP_DIR"
